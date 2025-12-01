@@ -4,12 +4,11 @@ import numpy as np
 from mip import Model, xsum, MINIMIZE, OptimizationStatus, CONTINUOUS, Column
 
 # =============================================================================
-# 1. GERADOR DE INSTÂNCIAS (CInstance)
-# Utiliza a mesma lógica e ranges de custo/demanda do código de Benders para comparação justa.
+# 1. GERADOR DE INSTÂNCIAS
 # =============================================================================
 class CInstance:
     def __init__(self, ni=10, nt=10, seed=2025):
-        # Mapeamento de capacidade conforme PDF/Código Benders
+        
         gamma_map = {5: 200, 10: 300, 15: 500, 20: 1000}
         
         if ni not in gamma_map:
@@ -34,7 +33,6 @@ class CInstance:
 
 # =============================================================================
 # 2. MODELO COMPACTO (RELAXAÇÃO LINEAR)
-# Equações (1)-(6) do PDF.
 # =============================================================================
 def solve_compact_lp(inst):
     m = Model('CLSP_Compact', sense=MINIMIZE, solver_name='CBC')
@@ -68,7 +66,6 @@ def solve_compact_lp(inst):
 
 # =============================================================================
 # 3. PRICING VIA PROGRAMAÇÃO DINÂMICA
-# (Conforme Figura 2 do PDF - Caminho Mínimo com custos modificados)
 # =============================================================================
 def solve_pricing_dp(inst, duals_u):
     """
